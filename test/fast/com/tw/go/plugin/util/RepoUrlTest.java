@@ -1,7 +1,7 @@
 package com.tw.go.plugin.util;
 
-import com.thoughtworks.go.plugin.api.validation.Errors;
-import com.thoughtworks.go.plugin.api.validation.ValidationError;
+import com.thoughtworks.go.plugin.api.response.validation.Errors;
+import com.thoughtworks.go.plugin.api.response.validation.ValidationError;
 import org.junit.Test;
 
 import java.util.ArrayList;

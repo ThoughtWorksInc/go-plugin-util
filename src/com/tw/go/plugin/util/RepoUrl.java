@@ -1,7 +1,7 @@
 package com.tw.go.plugin.util;
 
-import com.thoughtworks.go.plugin.api.validation.Errors;
-import com.thoughtworks.go.plugin.api.validation.ValidationError;
+import com.thoughtworks.go.plugin.api.response.validation.Errors;
+import com.thoughtworks.go.plugin.api.response.validation.ValidationError;
 import org.apache.commons.codec.digest.DigestUtils;
 
 public abstract class RepoUrl {
@@ -10,6 +10,10 @@ public abstract class RepoUrl {
     public static final String PASSWORD = "PASSWORD";
     protected final String url;
     protected Credentials credentials;
+
+    public Credentials getCredentials() {
+        return credentials;
+    }
 
     public RepoUrl(String url, String user, String password) {
         this(url);

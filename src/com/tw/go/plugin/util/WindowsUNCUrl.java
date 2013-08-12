@@ -1,6 +1,6 @@
 package com.tw.go.plugin.util;
 
-import com.thoughtworks.go.plugin.api.validation.Errors;
+import com.thoughtworks.go.plugin.api.response.validation.Errors;
 
 public class WindowsUNCUrl extends RepoUrl {
     public WindowsUNCUrl(String url, String invalidUser, String invalidPassword) {
