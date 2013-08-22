@@ -1,7 +1,5 @@
 package com.tw.go.plugin.util;
 
-import com.tw.go.plugin.util.FileRepoUrl;
-import com.tw.go.plugin.util.RepoUrl;
 import org.junit.Test;
 
 import java.io.File;

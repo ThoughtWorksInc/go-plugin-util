@@ -29,7 +29,7 @@ public class FileRepoUrl extends RepoUrl {
         }
     }
 
-    public void checkConnection() {
+    public void checkConnection(String urlOverride) {
         if (credentialsDetected()) {
             throw new RuntimeException("File protocol does not support username and/or password.");
         }

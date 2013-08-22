@@ -30,9 +30,9 @@ public abstract class RepoUrl {
         if (StringUtil.isBlank(url)) errors.addError(new ValidationError(REPO_URL, "Repository url is empty"));
     }
 
-    public abstract void checkConnection();
+    public abstract void checkConnection(String urlOverride);
 
-    public String forDisplay() {
+    public String getUrlStr() {
         return url;
     }
 
@@ -76,5 +76,9 @@ public abstract class RepoUrl {
 
     public String getSeparator() {
         return "/";
+    }
+
+    public void checkConnection() {
+        checkConnection(null);
     }
 }

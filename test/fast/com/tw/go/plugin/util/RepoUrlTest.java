@@ -60,7 +60,7 @@ public class RepoUrlTest {
 
     @Test
     public void shouldGetUrlForDisplay() throws Exception {
-        assertThat(RepoUrl.create("file:///foo/bar", null, null).forDisplay(), is("file:///foo/bar"));
+        assertThat(RepoUrl.create("file:///foo/bar", null, null).getUrlStr(), is("file:///foo/bar"));
     }
 
     private void assertRepositoryUrlValidation(String url, List<ValidationError> expectedErrors, boolean hasErrors) {

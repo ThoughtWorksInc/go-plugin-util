@@ -19,7 +19,7 @@ public class InvalidRepoUrl extends RepoUrl {
     }
 
     @Override
-    public void checkConnection() {
+    public void checkConnection(String urlOverride) {
         throw new RuntimeException(MESSAGE);
     }
 }

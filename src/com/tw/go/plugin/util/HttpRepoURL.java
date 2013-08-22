@@ -9,6 +9,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.params.CoreConnectionPNames;
 
 import java.io.IOException;
@@ -25,7 +26,8 @@ public class HttpRepoURL extends RepoUrl {
     public static DefaultHttpClient getHttpClient() {
         DefaultHttpClient client = new DefaultHttpClient();
         client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT,5*1000);
-        client.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler(3,false));
+        client.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler(3, false));
+        client.setRedirectStrategy(new DefaultRedirectStrategy());
         return client;
     }
 
@@ -47,14 +49,14 @@ public class HttpRepoURL extends RepoUrl {
     }
 
 
-    public void checkConnection() {
-        DefaultHttpClient client = new DefaultHttpClient();
+    public void checkConnection(String urlOverride) {
+        DefaultHttpClient client = getHttpClient();
         if (credentials.provided()) {
             UsernamePasswordCredentials usernamePasswordCredentials = new UsernamePasswordCredentials(credentials.getUser(), credentials.getPassword());
             //setAuthenticationPreemptive
             client.getCredentialsProvider().setCredentials(AuthScope.ANY, usernamePasswordCredentials);
         }
-        HttpGet method = new HttpGet(url);
+        HttpGet method = new HttpGet((urlOverride == null) ? url : urlOverride);
         try {
             HttpResponse response = client.execute(method);
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
@@ -85,4 +87,9 @@ public class HttpRepoURL extends RepoUrl {
         return localUrl;
     }
 
+    public String getUrlStrWithTrailingSlash() {
+        String urlStr = getUrlStr();
+        if (urlStr.endsWith("/")) return urlStr;
+        return urlStr + "/";
+    }
 }
