@@ -1,6 +1,6 @@
 package com.tw.go.plugin.util;
 
-import com.thoughtworks.go.plugin.api.response.validation.Errors;
+import com.thoughtworks.go.plugin.api.response.validation.ValidationResult;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -12,7 +12,7 @@ public class WindowsUNCUrl extends RepoUrl {
     }
 
     @Override
-    public void validate(Errors errors) {
+    public void validate(ValidationResult errors) {
     }
 
     @Override

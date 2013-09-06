@@ -1,7 +1,7 @@
 package com.tw.go.plugin.util;
 
-import com.thoughtworks.go.plugin.api.response.validation.Errors;
 import com.thoughtworks.go.plugin.api.response.validation.ValidationError;
+import com.thoughtworks.go.plugin.api.response.validation.ValidationResult;
 import org.apache.commons.codec.digest.DigestUtils;
 
 public abstract class RepoUrl {
@@ -24,10 +24,10 @@ public abstract class RepoUrl {
         this.url = url;
     }
 
-    public abstract void validate(Errors errors);
+    public abstract void validate(ValidationResult validationResult);
 
-    public void doBasicValidations(Errors errors) {
-        if (StringUtil.isBlank(url)) errors.addError(new ValidationError(REPO_URL, "Repository url is empty"));
+    public void doBasicValidations(ValidationResult validationResult) {
+        if (StringUtil.isBlank(url)) validationResult.addError(new ValidationError(REPO_URL, "Repository url is empty"));
     }
 
     public abstract void checkConnection(String urlOverride);

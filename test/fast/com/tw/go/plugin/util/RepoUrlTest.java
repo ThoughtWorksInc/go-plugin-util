@@ -1,7 +1,7 @@
 package com.tw.go.plugin.util;
 
-import com.thoughtworks.go.plugin.api.response.validation.Errors;
 import com.thoughtworks.go.plugin.api.response.validation.ValidationError;
+import com.thoughtworks.go.plugin.api.response.validation.ValidationResult;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -15,15 +15,15 @@ import static org.junit.Assert.*;
 public class RepoUrlTest {
     @Test
     public void shouldCorrectlyCheckIfRepositoryConfigurationValid() {
-        assertRepositoryUrlValidation("", asList(new ValidationError(REPO_URL, InvalidRepoUrl.MESSAGE)), true);
-        assertRepositoryUrlValidation(null, asList(new ValidationError(REPO_URL, InvalidRepoUrl.MESSAGE)), true);
-        assertRepositoryUrlValidation("  ", asList(new ValidationError(REPO_URL, InvalidRepoUrl.MESSAGE)), true);
-        assertRepositoryUrlValidation("h://localhost", asList(new ValidationError(REPO_URL, InvalidRepoUrl.MESSAGE)), true);
-        assertRepositoryUrlValidation("ftp:///foo.bar", asList(new ValidationError(REPO_URL, InvalidRepoUrl.MESSAGE)), true);
-        assertRepositoryUrlValidation("incorrectUrl", asList(new ValidationError(REPO_URL, InvalidRepoUrl.MESSAGE)), true);
-        assertRepositoryUrlValidation("http://user:password@localhost", asList(new ValidationError(REPO_URL, "User info should not be provided as part of the URL. Please provide credentials using USERNAME and PASSWORD configuration keys.")), true);
-        assertRepositoryUrlValidation("http://correct.com/url", new ArrayList<ValidationError>(), false);
-        assertRepositoryUrlValidation("file:///foo.bar", new ArrayList<ValidationError>(), false);
+        assertRepositoryUrlValidation("", asList(new ValidationError(REPO_URL, InvalidRepoUrl.MESSAGE)), false);
+        assertRepositoryUrlValidation(null, asList(new ValidationError(REPO_URL, InvalidRepoUrl.MESSAGE)), false);
+        assertRepositoryUrlValidation("  ", asList(new ValidationError(REPO_URL, InvalidRepoUrl.MESSAGE)), false);
+        assertRepositoryUrlValidation("h://localhost", asList(new ValidationError(REPO_URL, InvalidRepoUrl.MESSAGE)), false);
+        assertRepositoryUrlValidation("ftp:///foo.bar", asList(new ValidationError(REPO_URL, InvalidRepoUrl.MESSAGE)), false);
+        assertRepositoryUrlValidation("incorrectUrl", asList(new ValidationError(REPO_URL, InvalidRepoUrl.MESSAGE)), false);
+        assertRepositoryUrlValidation("http://user:password@localhost", asList(new ValidationError(REPO_URL, "User info should not be provided as part of the URL. Please provide credentials using USERNAME and PASSWORD configuration keys.")), false);
+        assertRepositoryUrlValidation("http://correct.com/url", new ArrayList<ValidationError>(), true);
+        assertRepositoryUrlValidation("file:///foo.bar", new ArrayList<ValidationError>(), true);
     }
 
     @Test
@@ -63,10 +63,10 @@ public class RepoUrlTest {
         assertThat(RepoUrl.create("file:///foo/bar", null, null).getUrlStr(), is("file:///foo/bar"));
     }
 
-    private void assertRepositoryUrlValidation(String url, List<ValidationError> expectedErrors, boolean hasErrors) {
-        Errors errors = new Errors();
+    private void assertRepositoryUrlValidation(String url, List<ValidationError> expectedErrors, boolean asExpected) {
+        ValidationResult errors = new ValidationResult();
         RepoUrl.create(url, null, null).validate(errors);
-        assertThat(errors.hasErrors(), is(hasErrors));
+        assertThat(errors.isSuccessful(), is(asExpected));
         assertThat(errors.getErrors().size(), is(expectedErrors.size()));
         assertThat(errors.getErrors().containsAll(expectedErrors), is(true));
     }
@@ -89,8 +89,8 @@ public class RepoUrlTest {
 
     @Test
     public void shouldAcceptWindowsUNCurls(){
-        Errors errors = new Errors();
+        ValidationResult errors = new ValidationResult();
         RepoUrl.create("\\\\insrinaray\\nuget-local-repo", null, null).validate(errors);
-        assertFalse(errors.hasErrors());
+        assertTrue(errors.isSuccessful());
     }
 }

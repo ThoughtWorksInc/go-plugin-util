@@ -1,7 +1,7 @@
 package com.tw.go.plugin.util;
 
-import com.thoughtworks.go.plugin.api.response.validation.Errors;
 import com.thoughtworks.go.plugin.api.response.validation.ValidationError;
+import com.thoughtworks.go.plugin.api.response.validation.ValidationResult;
 
 public class InvalidRepoUrl extends RepoUrl {
 
@@ -12,9 +12,9 @@ public class InvalidRepoUrl extends RepoUrl {
     }
 
     @Override
-    public void validate(Errors errors) {
+    public void validate(ValidationResult errors) {
         doBasicValidations(errors);
-        if(!errors.hasErrors())
+        if(errors.isSuccessful())
         errors.addError(new ValidationError(REPO_URL, MESSAGE));
     }
 

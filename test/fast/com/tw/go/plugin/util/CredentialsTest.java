@@ -1,7 +1,7 @@
 package com.tw.go.plugin.util;
 
-import com.thoughtworks.go.plugin.api.response.validation.Errors;
 import com.thoughtworks.go.plugin.api.response.validation.ValidationError;
+import com.thoughtworks.go.plugin.api.response.validation.ValidationResult;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -23,14 +23,14 @@ public class CredentialsTest {
 
     @Test
     public void shouldFailValidationIfOnlyPasswordProvided() throws Exception {
-        Errors errors = new Errors();
+        ValidationResult errors = new ValidationResult();
         new Credentials(null, "password").validate(errors);
-        assertThat(errors.hasErrors(), is(true));
+        assertThat(errors.isSuccessful(), is(false));
         assertThat(errors.getErrors(), hasItem(new ValidationError(RepoUrl.USERNAME, "Both Username and password are required.")));
 
-        errors = new Errors();
+        errors = new ValidationResult();
         new Credentials("user", "").validate(errors);
-        assertThat(errors.hasErrors(), is(true));
+        assertThat(errors.isSuccessful(), is(false));
         assertThat(errors.getErrors(), hasItem(new ValidationError(RepoUrl.PASSWORD, "Both Username and password are required.")));
     }
 }

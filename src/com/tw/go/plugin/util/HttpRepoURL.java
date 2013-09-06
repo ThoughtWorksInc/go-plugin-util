@@ -1,7 +1,7 @@
 package com.tw.go.plugin.util;
 
-import com.thoughtworks.go.plugin.api.response.validation.Errors;
 import com.thoughtworks.go.plugin.api.response.validation.ValidationError;
+import com.thoughtworks.go.plugin.api.response.validation.ValidationResult;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
@@ -31,20 +31,20 @@ public class HttpRepoURL extends RepoUrl {
         return client;
     }
 
-    public void validate(Errors errors) {
+    public void validate(ValidationResult validationResult) {
         try {
-            doBasicValidations(errors);
+            doBasicValidations(validationResult);
             URL validatedUrl = new URL(this.url);
             if (!(validatedUrl.getProtocol().startsWith("http"))) {
-                errors.addError(new ValidationError(REPO_URL, "Invalid URL: Only http is supported."));
+                validationResult.addError(new ValidationError(REPO_URL, "Invalid URL: Only http is supported."));
             }
 
             if (StringUtil.isNotBlank(validatedUrl.getUserInfo())) {
-                errors.addError(new ValidationError(REPO_URL, "User info should not be provided as part of the URL. Please provide credentials using USERNAME and PASSWORD configuration keys."));
+                validationResult.addError(new ValidationError(REPO_URL, "User info should not be provided as part of the URL. Please provide credentials using USERNAME and PASSWORD configuration keys."));
             }
-            credentials.validate(errors);
+            credentials.validate(validationResult);
         } catch (MalformedURLException e) {
-            errors.addError(new ValidationError(REPO_URL, "Invalid URL : " + url));
+            validationResult.addError(new ValidationError(REPO_URL, "Invalid URL : " + url));
         }
     }
 

@@ -1,7 +1,7 @@
 package com.tw.go.plugin.util;
 
-import com.thoughtworks.go.plugin.api.response.validation.Errors;
 import com.thoughtworks.go.plugin.api.response.validation.ValidationError;
+import com.thoughtworks.go.plugin.api.response.validation.ValidationResult;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -17,15 +17,15 @@ public class FileRepoUrl extends RepoUrl {
     }
 
     @Override
-    public void validate(Errors errors) {
+    public void validate(ValidationResult validationResult) {
         try {
-            doBasicValidations(errors);
+            doBasicValidations(validationResult);
             URL validatedUrl = new URL(this.url);
             if (StringUtil.isNotBlank(validatedUrl.getUserInfo())) {
-                errors.addError(new ValidationError(REPO_URL, "User info invalid for file URL"));
+                validationResult.addError(new ValidationError(REPO_URL, "User info invalid for file URL"));
             }
         } catch (MalformedURLException e) {
-            errors.addError(new ValidationError(REPO_URL, "Invalid URL : " + url));
+            validationResult.addError(new ValidationError(REPO_URL, "Invalid URL : " + url));
         }
     }
 

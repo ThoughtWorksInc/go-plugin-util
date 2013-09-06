@@ -1,7 +1,7 @@
 package com.tw.go.plugin.util;
 
-import com.thoughtworks.go.plugin.api.response.validation.Errors;
 import com.thoughtworks.go.plugin.api.response.validation.ValidationError;
+import com.thoughtworks.go.plugin.api.response.validation.ValidationResult;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -28,11 +28,11 @@ public class Credentials {
         return String.format("%s:%s", user, URLEncoder.encode(password, "UTF-8"));
     }
 
-    public void validate(Errors errors) {
+    public void validate(ValidationResult validationResult) {
         if (StringUtil.isBlank(user) && StringUtil.isNotBlank(password))
-            errors.addError(new ValidationError(RepoUrl.USERNAME, "Both Username and password are required."));
+            validationResult.addError(new ValidationError(RepoUrl.USERNAME, "Both Username and password are required."));
         if (StringUtil.isNotBlank(user) && StringUtil.isBlank(password))
-            errors.addError(new ValidationError(RepoUrl.PASSWORD, "Both Username and password are required."));
+            validationResult.addError(new ValidationError(RepoUrl.PASSWORD, "Both Username and password are required."));
     }
 
     public boolean provided() {
