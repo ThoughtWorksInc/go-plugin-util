@@ -27,7 +27,8 @@ public abstract class RepoUrl {
     public abstract void validate(ValidationResult validationResult);
 
     public void doBasicValidations(ValidationResult validationResult) {
-        if (StringUtil.isBlank(url)) validationResult.addError(new ValidationError(REPO_URL, "Repository url is empty"));
+        if (StringUtil.isBlank(url))
+            validationResult.addError(new ValidationError(REPO_URL, "Repository url is empty"));
     }
 
     public abstract void checkConnection(String urlOverride);
@@ -62,7 +63,6 @@ public abstract class RepoUrl {
         if (url.startsWith("http://")) return new HttpRepoURL(url, usernameValue, passwordValue);
         if (url.startsWith("https://")) return new HttpsRepoURL(url, usernameValue, passwordValue);
         if (url.startsWith("file://")) return new FileRepoUrl(url, usernameValue, passwordValue);
-        if (url.startsWith("\\\\")) return new WindowsUNCUrl(url, usernameValue, passwordValue);
         return new InvalidRepoUrl(url, usernameValue, passwordValue);
     }
 
@@ -71,7 +71,7 @@ public abstract class RepoUrl {
     }
 
     public boolean isHttp() {
-        return this instanceof HttpRepoURL || this instanceof HttpsRepoURL ;
+        return this instanceof HttpRepoURL || this instanceof HttpsRepoURL;
     }
 
     public String getSeparator() {

@@ -29,7 +29,7 @@ public class RepoUrlTest {
     @Test
     public void shouldReturnURLWithBasicAuth() {
         HttpRepoURL repoUrl = (HttpRepoURL) RepoUrl.create("http://localhost", "user", "password");
-        assertThat(repoUrl.getUrlWithBasicAuth(), is("http://user:password@localhost"));
+        assertThat(repoUrl.getUrlWithBasicAuth(), is("http://user:password@localhost/"));
     }
 
     @Test
@@ -72,25 +72,25 @@ public class RepoUrlTest {
     }
     @Test
     public void shouldReturnUrlWithEscapedPassword() throws Exception {
-        String repourl = "http://repohost:1111/some/path#fragment?q=foo";
+        String repourl = "http://repohost:1111/some/path/";
         String username = "username";
         String password = "!4321abcd";
         HttpRepoURL repoUrl = (HttpRepoURL) RepoUrl.create(repourl, username, password);
 
-        assertThat(repoUrl.getUrlWithBasicAuth(), is("http://username:%214321abcd@repohost:1111/some/path#fragment?q=foo"));
+        assertThat(repoUrl.getUrlWithBasicAuth(), is("http://username:%214321abcd@repohost:1111/some/path/"));
     }
 
     @Test
     public void shouldReturnUrlAsIsIfNoCredentialsProvided() throws Exception {
-        String url = "http://repohost:1111/some/path#fragment?q=foo";
+        String url = "http://repohost:1111/some/path/";
         HttpRepoURL repoUrl = (HttpRepoURL) RepoUrl.create(url, null, null);
         assertThat(repoUrl.getUrlWithBasicAuth(), is(url));
     }
 
     @Test
-    public void shouldAcceptWindowsUNCurls(){
+    public void shouldRejectWindowsUNCurls(){
         ValidationResult errors = new ValidationResult();
         RepoUrl.create("\\\\insrinaray\\nuget-local-repo", null, null).validate(errors);
-        assertTrue(errors.isSuccessful());
+        assertFalse(errors.isSuccessful());
     }
 }

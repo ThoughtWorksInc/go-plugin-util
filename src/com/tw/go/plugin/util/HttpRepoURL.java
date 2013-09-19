@@ -84,7 +84,8 @@ public class HttpRepoURL extends RepoUrl {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        return localUrl;
+        if (localUrl.endsWith("/")) return localUrl;
+        return localUrl + "/";
     }
 
     public String getUrlStrWithTrailingSlash() {
