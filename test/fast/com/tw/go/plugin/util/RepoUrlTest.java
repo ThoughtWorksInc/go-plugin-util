@@ -82,7 +82,19 @@ public class RepoUrlTest {
 
     @Test
     public void shouldReturnUrlAsIsIfNoCredentialsProvided() throws Exception {
-        String url = "http://repohost:1111/some/path/";
+        String url = "http://repohost/some/path";
+        HttpRepoURL repoUrl = (HttpRepoURL) RepoUrl.create(url, null, null);
+        assertThat(repoUrl.getUrlWithBasicAuth(), is(url+"/"));
+    }
+    @Test
+    public void shouldHandleQuery() throws Exception {
+        String url = "http://repohost/some/path?q=123&w=qwe";
+        HttpRepoURL repoUrl = (HttpRepoURL) RepoUrl.create(url, null, null);
+        assertThat(repoUrl.getUrlWithBasicAuth(), is(url));
+    }
+    @Test
+    public void shouldHandleFragment() throws Exception {
+        String url = "http://repohost/some/path#fragment213";
         HttpRepoURL repoUrl = (HttpRepoURL) RepoUrl.create(url, null, null);
         assertThat(repoUrl.getUrlWithBasicAuth(), is(url));
     }

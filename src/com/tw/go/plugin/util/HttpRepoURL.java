@@ -13,7 +13,6 @@ import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.params.CoreConnectionPNames;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -71,21 +70,33 @@ public class HttpRepoURL extends RepoUrl {
     }
 
     public String getUrlWithBasicAuth() {
-        String localUrl = this.url;
+        return getUrlWithCreds(url, credentials);
+    }
+
+    public static String getUrlWithCreds(String urlStr, Credentials credentials) {
         try {
-            new URL(localUrl);
+            URL urlObj = new URL(urlStr);
+            StringBuilder sb = new StringBuilder();
+            sb.append(urlObj.getProtocol());
+            sb.append("://");
             if (credentials.provided()) {
-                String[] parts = localUrl.split("//");
-                if (parts.length != 2) throw new RuntimeException(String.format("Invalid uri format %s", this.url));
-                localUrl = parts[0] + "//" + credentials.getUserInfo() + "@" + parts[1];
+                sb.append(credentials.getUserInfo()).append("@");
             }
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        } catch (MalformedURLException e) {
+            sb.append(urlObj.getHost());
+            if(urlObj.getPort() != -1){
+                sb.append(":").append(urlObj.getPort());
+            }
+            sb.append(urlObj.getPath());
+            if(urlObj.getQuery() != null)
+                sb.append("?").append(urlObj.getQuery());
+            if(urlObj.getRef() != null)
+                sb.append("#").append(urlObj.getRef());
+            if(urlObj.getQuery() == null && urlObj.getRef() == null && !urlObj.getPath().endsWith("/"))
+                sb.append("/");
+            return sb.toString();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        if (localUrl.endsWith("/")) return localUrl;
-        return localUrl + "/";
     }
 
     public String getUrlStrWithTrailingSlash() {
