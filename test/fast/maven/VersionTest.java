@@ -224,6 +224,13 @@ public class VersionTest {
     }
 
     @Test
+    public void IamNotNewerThanMyself(){
+        Version v1 = new Version("1.2");
+        Version v2 = new Version("1.2");
+        assertTrue(v1.notNewerThan(v2));
+    }
+
+    @Test
     public void testSort() {
         List<Version> versions = new ArrayList<Version>();
         versions.add(new Version("0.quali"));

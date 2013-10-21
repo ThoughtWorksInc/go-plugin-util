@@ -1,5 +1,6 @@
 <project name="go-nuget-poller" default="all" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
+    <!--http://www.thoughtworks.com/products/docs/go/13.3/help/resources/go-plugin-api-current.jar-->
     <property name="go.api.jar" value="sdk/go-plugin-api-13.3.0.jar"/>
     <property name="target.dir" value="target"/>
     <property name="dist.dir" value="dist"/>
@@ -31,7 +32,7 @@
     </target>
 
     <target name="compile.source" depends="prepare, resolve">
-        <javac srcdir="src" destdir="${target.dir}/src" classpathref="compile.classpath" includeantruntime="false" source="1.6"/>
+        <javac srcdir="src" destdir="${target.dir}/src" classpathref="compile.classpath" includeantruntime="false" source="1.6" debug="on" debuglevel="vars"/>
     </target>
 
     <target name="compile.test" depends="compile.source">
@@ -59,14 +60,6 @@
     </target>
 
     <target name="dist" depends="compile.source">
-        <mkdir dir="${target.dir}/src/lib"/>
-        <copy todir="${target.dir}/src/lib" flatten="true">
-            <fileset dir="lib">
-                <exclude name="junit*.jar"/>
-                <exclude name="mockito*.jar"/>
-                <include name="*.jar"/>
-            </fileset>
-        </copy>
         <basename property="jar.name" file="${basedir}"/>
         <mkdir dir="${dist.dir}"/>
         <jar basedir="${target.dir}/src" destfile="${dist.dir}/${jar.name}.jar"/>
