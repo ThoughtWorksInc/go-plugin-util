@@ -1,14 +1,11 @@
 <project name="go-nuget-poller" default="all" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
-    <!--http://www.thoughtworks.com/products/docs/go/13.3/help/resources/go-plugin-api-current.jar-->
-    <property name="go.api.jar" value="sdk/go-plugin-api-13.3.0.jar"/>
     <property name="target.dir" value="target"/>
     <property name="dist.dir" value="dist"/>
     <property name="test.reports.dir" value="reports"/>
     <ivy:cachepath pathid="lib.classpath"/>
     <path id="compile.classpath">
         <path refid="lib.classpath"/>
-        <pathelement location="${go.api.jar}"/>
     </path>
 
     <target name="all" depends="clean, compile.source, compile.test, test, dist"/>
