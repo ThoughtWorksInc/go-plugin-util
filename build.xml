@@ -1,4 +1,4 @@
-<project name="go-nuget-poller" default="all" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="go-plugin-util" default="all" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
     <property name="target.dir" value="target"/>
     <property name="dist.dir" value="dist"/>
